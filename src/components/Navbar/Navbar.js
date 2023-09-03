@@ -1,21 +1,29 @@
 "use client";
 
-import { adminNavOptions, navOptions } from "@/utils";
-import React, { Fragment } from "react";
+import { GlobalContext } from "@/Context";
+import { adminNavOptions, navOptions, styles } from "@/utils";
+import React, { Fragment, useContext } from "react";
+import CommonModel from "../CommonModel";
 
 const isAdminView = false;
-const isAuthUser = false;
+const isAuthUser = true;
 const user = {
   role: "admin",
 };
 
-function NavItems() {
+function NavItems({ isModelView = false }) {
   return (
     <div
-      className="items-center justify-between w-full md:flex md:w-auto"
+      className={`items-center justify-between w-full md:flex md:w-auto ${
+        isModelView ? "" : "hidden"
+      }`}
       id="nav-items"
     >
-      <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium  border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:norder-0 bg-white">
+      <ul
+        className={`flex flex-col p-4 md:p-0 mt-4 font-medium rounded-lg md:flex-row md:space-x-8 md:mt-0 md:norder-0 bg-white 
+      ${isModelView ? "border-none" : "border border-gray-100"}
+      `}
+      >
         {isAdminView
           ? adminNavOptions.map((item) => (
               <li
@@ -39,9 +47,11 @@ function NavItems() {
 }
 
 function Navbar(props) {
+  const { showNavModel, setShowNavModel } = useContext(GlobalContext);
+
   return (
     <>
-      <nav className="bg-white fixed w-full z-20 top-0 border-b border-gray-200">
+      <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div className="flex items-center cursor-pointer">
             <span className="slef-center text-2xl font-semibold whitespace-nowrap">
@@ -51,25 +61,29 @@ function Navbar(props) {
           <div className="flex md:order-2 gap-2">
             {!isAdminView && isAuthUser ? (
               <Fragment>
-                <button>Account</button>
-                <button>Cart</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white">Account</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white">Cart</button>
               </Fragment>
             ) : null}
             {user?.role === "admin" ? (
               isAdminView ? (
-                <button>Client View</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white">Client View</button>
               ) : (
-                <button>Admin View</button>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white">Admin View</button>
               )
             ) : null}
-            {isAuthUser ? <button>Logout</button> : <button>Login</button>}
+            {isAuthUser ? (
+              <button className="mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white">Logout</button>
+            ) : (
+              <button className="mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white">Login</button>
+            )}
             <button
               data-collapse-toggle="navbar-sticky"
               type="button"
               className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-sticky"
               aria-expanded="false"
-              onClick={() => setShowNavModal(true)}
+              onClick={() => setShowNavModel(true)}
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -90,6 +104,12 @@ function Navbar(props) {
           <NavItems />
         </div>
       </nav>
+      <CommonModel
+        showModelTitle={false}
+        mainContent={<NavItems isModelView={true} />}
+        show={showNavModel}
+        setShow={setShowNavModel}
+      />
     </>
   );
 }
