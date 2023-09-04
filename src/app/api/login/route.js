@@ -17,10 +17,7 @@ export async function POST(req) {
 
   const { email, password } = await req.json();
 
-  const { error } = schema.validate({
-    email,
-    password,
-  });
+  const { error } = schema.validate({ email, password });
 
   if (error) {
     return NextResponse.json({
@@ -34,7 +31,7 @@ export async function POST(req) {
     if (!checkUser) {
       return NextResponse.json({
         success: false,
-        message: "Account not found with email",
+        message: "Account not found with this email",
       });
     }
 
@@ -42,7 +39,7 @@ export async function POST(req) {
     if (!checkPassword) {
       return NextResponse.json({
         success: false,
-        message: "Incorrect Password Try again",
+        message: "Incorrect password. Please try again !",
       });
     }
 
@@ -65,16 +62,18 @@ export async function POST(req) {
         role: checkUser.role,
       },
     };
+
     return NextResponse.json({
       success: true,
-      message: "Login Successfully",
+      message: "Login successfull!",
       finalData,
     });
-  } catch (error) {
-    console.log("error", error);
+  } catch (e) {
+    console.log("Error while logging In. Please try again");
+
     return NextResponse.json({
       success: false,
-      message: "Something wrong",
+      message: "Something went wrong ! Please try again later",
     });
   }
 }
