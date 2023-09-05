@@ -174,16 +174,28 @@ export const adminAddProductformControls = [
 ];
 
 export const AvailableSizes = [
-    {
-        id: "s",
-        label:"S"
-    },
-    {
-        id: "m",
-        label:"M"
-    },
-    {
-        id: "l",
-        label:"L"
-    },
-]
+  {
+    id: "s",
+    label: "S",
+  },
+  {
+    id: "m",
+    label: "M",
+  },
+  {
+    id: "l",
+    label: "L",
+  },
+];
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyAo_95TXeZE4R9yJ9LWsEhcYqS5GYHDvEk",
+  authDomain: "ecommer-project-nextjs.firebaseapp.com",
+  projectId: "ecommer-project-nextjs",
+  storageBucket: "ecommer-project-nextjs.appspot.com",
+  messagingSenderId: "821580838618",
+  appId: "1:821580838618:web:5d390f81a29ee2202ed7e3",
+  measurementId: "G-NFCHCX1BP5",
+};
+
+export const firebaseStorageURL = "gs://ecommer-project-nextjs.appspot.com";

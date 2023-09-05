@@ -12,6 +12,8 @@ function GlobalState({ children }) {
     loading: false,
     id: "",
   });
+
+  const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -40,6 +42,8 @@ function GlobalState({ children }) {
         setUser,
         componentLevelLoader,
         setComponentLevelLoader,
+        currentUpdatedProduct,
+        setCurrentUpdatedProduct,
       }}
     >
       {children}
