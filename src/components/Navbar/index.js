@@ -5,6 +5,7 @@ import { adminNavOptions, navOptions, styles } from "@/utils";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useContext, useEffect } from "react";
+import CartModel from "../CartModel";
 import CommonModel from "../CommonModel";
 
 function NavItems({ isModelView = false, isAdminView, router }) {
@@ -53,7 +54,9 @@ function Navbar(props) {
     isAuthUser,
     setIsAuthUser,
     currentUpdatedProduct,
-    setCurrentUpdatedProduct
+    setCurrentUpdatedProduct,
+    showCartModel,
+    setShowCartModel
   } = useContext(GlobalContext);
 
   const router = useRouter();
@@ -62,12 +65,13 @@ function Navbar(props) {
   console.log(currentUpdatedProduct, "nav");
 
   useEffect(() => {
-
-    if (pathName !== "/admin-view/add-product" && currentUpdatedProduct !== null) {
-      setCurrentUpdatedProduct(null)
+    if (
+      pathName !== "/admin-view/add-product" &&
+      currentUpdatedProduct !== null
+    ) {
+      setCurrentUpdatedProduct(null);
     }
-
-  },[pathName])
+  }, [pathName]);
 
   const handleLogout = () => {
     setIsAuthUser(false);
@@ -105,6 +109,7 @@ function Navbar(props) {
                   className={
                     "mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white"
                   }
+                  onClick={() => setShowCartModel(true)}
                 >
                   Cart
                 </button>
@@ -179,10 +184,17 @@ function Navbar(props) {
       </nav>
       <CommonModel
         showModelTitle={false}
-        mainContent={<NavItems router={router} isModelView={true} isAdminView={isAdminView} />}
+        mainContent={
+          <NavItems
+            router={router}
+            isModelView={true}
+            isAdminView={isAdminView}
+          />
+        }
         show={showNavModel}
         setShow={setShowNavModel}
       />
+      {showCartModel && <CartModel />}
     </>
   );
 }

@@ -7,7 +7,7 @@ export const GlobalContext = createContext(null);
 
 function GlobalState({ children }) {
   const [showNavModel, setShowNavModel] = useState(false);
-  const [pageLevelLoader, setPageLevelLoader] = useState(false);
+  const [pageLevelLoader, setPageLevelLoader] = useState(true);
   const [componentLevelLoader, setComponentLevelLoader] = useState({
     loading: false,
     id: "",
@@ -16,6 +16,8 @@ function GlobalState({ children }) {
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
+  const [showCartModel, setShowCartModel] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -44,6 +46,10 @@ function GlobalState({ children }) {
         setComponentLevelLoader,
         currentUpdatedProduct,
         setCurrentUpdatedProduct,
+        showCartModel,
+        setShowCartModel,
+        cartItems,
+        setCartItems,
       }}
     >
       {children}

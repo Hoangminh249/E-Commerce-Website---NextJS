@@ -14,6 +14,8 @@ export default function ProductButton({ item }) {
     setComponentLevelLoader,
     componentLevelLoader,
     user,
+    showCartModel,
+    setShowCartModel,
   } = useContext(GlobalContext);
   const router = useRouter();
 
@@ -50,10 +52,14 @@ export default function ProductButton({ item }) {
       toast.success(res.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModel(true)
     } else {
       toast.error(res.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModel(true)
     }
 
     console.log(res);
@@ -93,7 +99,17 @@ export default function ProductButton({ item }) {
         onClick={() => handleAddToCart(item)}
         className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
       >
-        Add To Card
+        {componentLevelLoader &&
+        componentLevelLoader.loading &&
+        componentLevelLoader.id === item._id ? (
+          <ComponentLevelLoader
+            text={"Adding To Cart"}
+            color={"#ffffff"}
+            loading={componentLevelLoader && componentLevelLoader.loading}
+          />
+        ) : (
+          "Add To Card"
+        )}
       </button>
     </>
   );
