@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectToDB from "@/database";
 import Product from "@/models/product";
+import AuthUser from "@/middleware/AuthUser";
 
 export const dynamic = "force-dynamic";
 
@@ -8,26 +9,12 @@ export async function PUT(req) {
   try {
     await connectToDB();
 
-    const extractData = await req.json();
+    const isAuthUser = await AuthUser(req);
 
-    const {
-      _id,
-      name,
-      price,
-      description,
-      category,
-      sizes,
-      deliveryInfo,
-      onSale,
-      priceDrop,
-      imageUrl,
-    } = extractData;
-
-    const updatedProduct = await Product.findOneAndUpdate(
-      {
-        _id: _id,
-      },
-      {
+    if (isAuthUser?.role === "admin") {
+      const extractData = await req.json();
+      const {
+        _id,
         name,
         price,
         description,
@@ -37,19 +24,41 @@ export async function PUT(req) {
         onSale,
         priceDrop,
         imageUrl,
-      },
-      { new: true }
-    );
+      } = extractData;
 
-    if (updatedProduct) {
-      return NextResponse.json({
-        success: true,
-        message: "Product updated Successfully",
-      });
+      const updatedProduct = await Product.findOneAndUpdate(
+        {
+          _id: _id,
+        },
+        {
+          name,
+          price,
+          description,
+          category,
+          sizes,
+          deliveryInfo,
+          onSale,
+          priceDrop,
+          imageUrl,
+        },
+        { new: true }
+      );
+
+      if (updatedProduct) {
+        return NextResponse.json({
+          success: true,
+          message: "Product updated Successfully",
+        });
+      } else {
+        return NextResponse.json({
+          success: false,
+          message: "Fail to update Product",
+        });
+      }
     } else {
       return NextResponse.json({
         success: false,
-        message: "Fail to update Product",
+        message: "You are not authenticated",
       });
     }
   } catch (error) {

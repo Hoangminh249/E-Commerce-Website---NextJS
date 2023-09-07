@@ -1,51 +1,53 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
-import Product from "@/models/product";
+import Cart from "@/models/cart";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function DELETE(req) {
+export const GET = async (req) => {
   try {
     await connectToDB();
 
     const isAuthUser = await AuthUser(req);
 
-    if (isAuthUser?.role === "admin") {
+    if (isAuthUser) {
       const { searchParams } = new URL(req.url);
-
       const id = searchParams.get("id");
 
       if (!id) {
         return NextResponse.json({
           success: false,
-          message: "Product ID is requied",
+          message: "Please Login in ",
         });
       }
-      const deletedProduct = await Product.findByIdAndDelete(id);
 
-      if (deletedProduct) {
+      const extractAllCartItems = await Cart.find({ userID: id })
+        .populate("userID")
+        .populate("productID");
+
+      if (extractAllCartItems) {
         return NextResponse.json({
           success: true,
-          message: "Product deleted Successfully",
+          data: extractAllCartItems,
         });
       } else {
         return NextResponse.json({
           success: false,
-          message: "Fail to delete Product",
+          status: 204,
+          message: "No Cart items are found ",
         });
       }
     } else {
       return NextResponse.json({
         success: false,
-        message: "You are not authenticated",
+        message: "You are Authenticated",
       });
     }
   } catch (error) {
-    console.log(error);
     return NextResponse.json({
       success: false,
-      message: "Something went wrong !",
+      message: "Something went wrong!",
     });
   }
-}
+};

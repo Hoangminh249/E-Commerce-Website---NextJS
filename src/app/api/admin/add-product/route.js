@@ -2,6 +2,7 @@ import connectToDB from "@/database";
 import { NextResponse } from "next/server";
 import Joi from "joi";
 import Product from "@/models/product";
+import AuthUser from "@/middleware/AuthUser";
 
 const AddNewProductSchema = Joi.object({
   name: Joi.string().required(),
@@ -21,9 +22,13 @@ export async function POST(req) {
   try {
     await connectToDB();
 
-    const user = "admin";
+    // const user = "admin";
 
-    if (user === "admin") {
+    const isAuthUser = await AuthUser(req)
+
+    console.log(isAuthUser , "admin");
+
+    if (isAuthUser?.role === 'admin') {
       const extractData = await req.json();
 
       const {

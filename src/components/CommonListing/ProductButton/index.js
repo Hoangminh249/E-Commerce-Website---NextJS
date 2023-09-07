@@ -2,6 +2,7 @@
 
 import ComponentLevelLoader from "@/components/Loader/componentLevelLoder";
 import { GlobalContext } from "@/Context";
+import { addToCart } from "@/services/cart";
 import { deleteAProduct } from "@/services/product";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext } from "react";
@@ -12,6 +13,7 @@ export default function ProductButton({ item }) {
     setCurrentUpdatedProduct,
     setComponentLevelLoader,
     componentLevelLoader,
+    user,
   } = useContext(GlobalContext);
   const router = useRouter();
 
@@ -20,6 +22,7 @@ export default function ProductButton({ item }) {
   const isAdminView = pathName.includes("admin-view");
 
   const handleDeleteProduct = async (item) => {
+    console.log(item);
     setComponentLevelLoader({ loading: true, id: item._id });
 
     const res = await deleteAProduct(item._id);
@@ -36,6 +39,24 @@ export default function ProductButton({ item }) {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
+  };
+
+  const handleAddToCart = async (getItem) => {
+    setComponentLevelLoader({ loading: true, id: getItem._id });
+
+    const res = await addToCart({ productID: getItem._id, userID: user._id });
+
+    if (res.success) {
+      toast.success(res.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.error(res.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+
+    console.log(res);
   };
 
   return isAdminView ? (
@@ -68,7 +89,10 @@ export default function ProductButton({ item }) {
     </>
   ) : (
     <>
-      <button className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+      <button
+        onClick={() => handleAddToCart(item)}
+        className="mt-1.5 flex w-full justify-center bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+      >
         Add To Card
       </button>
     </>
