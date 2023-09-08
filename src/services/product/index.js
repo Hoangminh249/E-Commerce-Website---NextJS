@@ -41,7 +41,7 @@ export const updateAProduct = async (formData) => {
     const res = await fetch("/api/admin/update-product", {
       method: "PUT",
       headers: {
-        "content-type": "application/json",
+        "Content-type": "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
       body: JSON.stringify(formData),

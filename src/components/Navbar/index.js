@@ -102,6 +102,7 @@ function Navbar(props) {
                   className={
                     "mt-1.5 inline-block bg-black px-5 py-3 text-us font medium uppercase tracking-wide text-white"
                   }
+                  onClick={() => router.push("/account")}
                 >
                   Account
                 </button>

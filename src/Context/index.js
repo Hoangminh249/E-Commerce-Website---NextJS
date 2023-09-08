@@ -5,6 +5,15 @@ import React, { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext(null);
 
+export const initialCheckoutFormData = {
+  shippingAddress: {},
+  paymentMethod: "",
+  totalPrice: 0,
+  isPaid: false,
+  paidAt: new Date(),
+  isProcessing: true,
+};
+
 function GlobalState({ children }) {
   const [showNavModel, setShowNavModel] = useState(false);
   const [pageLevelLoader, setPageLevelLoader] = useState(true);
@@ -18,6 +27,18 @@ function GlobalState({ children }) {
   const [user, setUser] = useState(null);
   const [showCartModel, setShowCartModel] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [addressFormData, setAddressFormData] = useState({
+    fullName: "",
+    city: "",
+    country: "",
+    postalCode: "",
+    address: "",
+  });
+
+  const [checkoutFormData, setCheckoutFormData] = useState(
+    initialCheckoutFormData
+  );
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -25,9 +46,12 @@ function GlobalState({ children }) {
     if (Cookies.get("token") !== undefined) {
       setIsAuthUser(true);
       const userData = JSON.parse(localStorage.getItem("user")) || {};
+      const getCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
       setUser(userData);
+      setCartItems(getCartItems);
     } else {
       setIsAuthUser(false);
+      setUser({})
     }
   }, [Cookies]);
 
@@ -50,6 +74,12 @@ function GlobalState({ children }) {
         setShowCartModel,
         cartItems,
         setCartItems,
+        addresses,
+        setAddresses,
+        addressFormData,
+        setAddressFormData,
+        checkoutFormData,
+        setCheckoutFormData,
       }}
     >
       {children}
