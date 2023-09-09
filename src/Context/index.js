@@ -39,6 +39,8 @@ function GlobalState({ children }) {
     id: "",
   });
 
+  const [orderDetails, setOrderDetails] = useState(null);
+
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
@@ -52,6 +54,8 @@ function GlobalState({ children }) {
     postalCode: "",
     address: "",
   });
+
+  const [allOrdersForUser, setAllOrdersForUser] = useState([]);
 
   const router = useRouter();
   const pathName = usePathname();
@@ -120,6 +124,10 @@ function GlobalState({ children }) {
         setAddressFormData,
         checkoutFormData,
         setCheckoutFormData,
+        allOrdersForUser,
+        setAllOrdersForUser,
+        orderDetails,
+        setOrderDetails,
       }}
     >
       {children}

@@ -30,6 +30,7 @@ export const getAllOrdersForUser = async (id) => {
     });
 
     const data = await res.json();
+    console.log(data, "data");
     return data;
   } catch (error) {
     console.log(error);
@@ -44,7 +45,6 @@ export const getOrderDetails = async (id) => {
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
-      body: JSON.stringify(formData),
     });
 
     const data = await res.json();
