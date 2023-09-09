@@ -61,7 +61,7 @@ export const POST = async (req) => {
     } else {
       return NextResponse.json({
         success: false,
-        message: "You are Authenticated",
+        message: "You are not Authenticated ! Loggin to buy product",
       });
     }
   } catch (error) {

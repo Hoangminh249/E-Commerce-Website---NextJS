@@ -1,11 +1,11 @@
 "use client";
 
+import Notification from "@/components/Nofitication";
 import { GlobalContext } from "@/Context";
 import { fetchAllAddresses } from "@/services/address";
 import { createNewOrder } from "@/services/order";
 import { callStripeSession } from "@/services/stripe";
 import { loadStripe } from "@stripe/stripe-js";
-import { Familjen_Grotesk } from "next/font/google";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
@@ -21,8 +21,6 @@ export default function Checkout() {
     setCheckoutFormData,
   } = useContext(GlobalContext);
   const router = useRouter();
-
-  console.log("checkoutFormData", checkoutFormData);
 
   const [selectedAddress, setSelectedAddress] = useState(null);
 
@@ -52,8 +50,9 @@ export default function Checkout() {
   }, [user]);
 
   useEffect(() => {
-    const createFinalOrder = async () => {
+    async function createFinalOrder() {
       const isStripe = JSON.parse(localStorage.getItem("stripe"));
+
       if (
         isStripe &&
         params.get("status") === "success" &&
@@ -74,7 +73,8 @@ export default function Checkout() {
           })),
           paymentMethod: "Stripe",
           totalPrice: cartItems.reduce(
-            (total, item) => (item.productID.price + total, 0)
+            (total, item) => item.productID.price + total,
+            0
           ),
           isPaid: true,
           isProcessing: true,
@@ -97,7 +97,8 @@ export default function Checkout() {
           });
         }
       }
-    };
+    }
+
     createFinalOrder();
   }, [params.get("status"), cartItems]);
 
@@ -125,7 +126,7 @@ export default function Checkout() {
     });
   };
 
-  const handleCheckout = async () => {
+  async function handleCheckout() {
     const stripe = await stripePromise;
 
     const createLineItems = cartItems.map((item) => ({
@@ -139,6 +140,7 @@ export default function Checkout() {
       },
       quantity: 1,
     }));
+
     const res = await callStripeSession(createLineItems);
     setIsOrderProcessing(true);
     localStorage.setItem("stripe", true);
@@ -147,17 +149,18 @@ export default function Checkout() {
     const { error } = await stripe.redirectToCheckout({
       sessionId: res.id,
     });
+
     console.log(error);
-  };
+  }
 
   useEffect(() => {
     if (orderSuccess) {
       setTimeout(() => {
-        // setOrderSuccess(false);
-        router.push("/orders");
-      }, [2000]);
+        setOrderSuccess(false)
+        router.push("/orders")
+      }, [2500]);
     }
-  }, [orderSuccess]);
+  },[orderSuccess])
 
   if (orderSuccess) {
     return (
@@ -177,6 +180,8 @@ export default function Checkout() {
       </section>
     );
   }
+
+
 
   if (isOrderProcessing) {
     return (
@@ -304,6 +309,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 }

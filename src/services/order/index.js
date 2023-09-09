@@ -4,18 +4,18 @@ export const createNewOrder = async (formData) => {
   try {
     const res = await fetch("/api/order/create-order", {
       method: "POST",
-
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
       body: JSON.stringify(formData),
     });
 
     const data = await res.json();
+
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };
 

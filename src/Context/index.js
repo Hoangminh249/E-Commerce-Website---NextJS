@@ -1,6 +1,7 @@
 "use client";
 
 import Cookies from "js-cookie";
+import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext(null);
@@ -13,6 +14,22 @@ export const initialCheckoutFormData = {
   paidAt: new Date(),
   isProcessing: true,
 };
+
+const protectedRoutes = [
+  "/cart",
+  "/checkout",
+  "/account",
+  "/orders",
+  "/admin-view",
+  "/admin-view/add-product",
+  "/admin-view/all-products",
+];
+
+const protectedAdminRoutes = [
+  "/admin-view",
+  "/admin-view/add-product",
+  "/admin-view/all-products",
+];
 
 function GlobalState({ children }) {
   const [showNavModel, setShowNavModel] = useState(false);
@@ -36,13 +53,14 @@ function GlobalState({ children }) {
     address: "",
   });
 
+  const router = useRouter();
+  const pathName = usePathname();
+
   const [checkoutFormData, setCheckoutFormData] = useState(
     initialCheckoutFormData
   );
 
   useEffect(() => {
-    console.log(Cookies.get("token"));
-
     if (Cookies.get("token") !== undefined) {
       setIsAuthUser(true);
       const userData = JSON.parse(localStorage.getItem("user")) || {};
@@ -51,9 +69,31 @@ function GlobalState({ children }) {
       setCartItems(getCartItems);
     } else {
       setIsAuthUser(false);
-      setUser({})
+      setUser({}); //unauthenticated user
     }
   }, [Cookies]);
+
+  useEffect(() => {
+    if (
+      user &&
+      (Object.keys(user).length === 0) &
+        (protectedRoutes.indexOf(pathName) > -1)
+    ) {
+      return router.push("/login");
+    }
+  }, [user, pathName]);
+
+  useEffect(() => {
+    if (
+      user !== null &&
+      user &&
+      Object.keys(user).length > 0 &&
+      user?.role !== "admin" &&
+      protectedAdminRoutes.indexOf(pathName) > -1
+    ) {
+      return router.push("/unauthorized-page");
+    }
+  }, [user, pathName]);
 
   return (
     <GlobalContext.Provider

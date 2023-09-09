@@ -9,7 +9,7 @@ export async function GET(req) {
   try {
     await connectToDB(req);
 
-    const isAuthUser = AuthUser(req);
+    const isAuthUser = await AuthUser(req);
 
     if (isAuthUser) {
       const { searchParams } = new URL(req.url);

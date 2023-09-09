@@ -7,8 +7,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req) {
   try {
-    await connectToDB(req);
-    const isAuthUser = AuthUser(req);
+    await connectToDB();
+    const isAuthUser = await AuthUser(req);
 
     if (isAuthUser) {
       const { searchParams } = new URL(req.url);
