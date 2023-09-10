@@ -25,11 +25,28 @@ export default function CartModel() {
     const res = await getAllCartItems(user?._id);
 
     if (res.success) {
-      setCartItems(res.data);
-      localStorage.setItem("cartItems", JSON.stringify(res.data));
-    }
+      const updatedData =
+        res.data && res.data.length
+          ? res.data.map((item) => ({
+              ...item,
+              productID: {
+                ...item.productID,
+                price:
+                  item.productID.onSale === "yes"
+                    ? parseInt(
+                        (
+                          item.productID.price -
+                          item.productID.price * (item.productID.priceDrop / 100)
+                        ).toFixed(2)
+                      )
+                    : item.productID.price,
+              },
+            }))
+          : [];
 
-    console.log(res);
+      setCartItems(updatedData);
+      localStorage.setItem("cartItems", JSON.stringify(updatedData));
+    }
   };
 
   useEffect(() => {
@@ -37,7 +54,7 @@ export default function CartModel() {
   }, [user]);
 
   const handleRemoveCartItem = async (getCartItemID) => {
-    setComponentLevelLoader({ loading: true, getCartItemID });
+    setComponentLevelLoader({ loading: true, id: getCartItemID });
 
     const res = await deleteFromCart(getCartItemID);
 
@@ -54,6 +71,7 @@ export default function CartModel() {
       setComponentLevelLoader({ loading: false, id: getCartItemID });
     }
   };
+
 
   return (
     <CommonModel

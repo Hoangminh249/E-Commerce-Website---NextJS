@@ -3,14 +3,13 @@
 import InputComponent from "@/components/FormElements/InputComponent/InputComponent";
 import SelectComponent from "@/components/FormElements/SelectComponent/SelectComponent";
 import ComponentLevelLoader from "@/components/Loader/componentLevelLoder";
+import Notification from "@/components/Nofitication";
 import { GlobalContext } from "@/Context";
 import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
-const isRegistered = false;
 
 const initialFormData = {
   name: "",
@@ -25,9 +24,9 @@ export default function Register() {
   const { pageLevelLoader, setPageLevelLoader, isAuthUser } =
     useContext(GlobalContext);
 
+
   const router = useRouter();
 
-  console.log(formData);
 
   const isFormValid = () => {
     return formData &&
@@ -40,8 +39,6 @@ export default function Register() {
       ? true
       : false;
   };
-
-  console.log(isFormValid());
 
   const handleRegisterSubmit = async () => {
     setPageLevelLoader(true);
@@ -62,7 +59,6 @@ export default function Register() {
       setFormData(initialFormData);
     }
 
-    console.log(data);
   };
 
   useEffect(() => {
@@ -83,8 +79,9 @@ export default function Register() {
               {isRegistered ? (
                 <button
                   className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
-            text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
-            "
+                text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
+                "
+                  onClick={() => router.push("/login")}
                 >
                   Login
                 </button>
@@ -96,25 +93,25 @@ export default function Register() {
                         type={controlItem.type}
                         placeholder={controlItem.placeholder}
                         label={controlItem.label}
-                        value={formData[controlItem.id]}
-                        onChange={(e) => {
-                          return setFormData({
+                        onChange={(event) => {
+                          setFormData({
                             ...formData,
-                            [controlItem.id]: e.target.value,
+                            [controlItem.id]: event.target.value,
                           });
                         }}
+                        value={formData[controlItem.id]}
                       />
                     ) : controlItem.componentType === "select" ? (
                       <SelectComponent
                         options={controlItem.options}
                         label={controlItem.label}
-                        value={formData[controlItem.id]}
-                        onChange={(e) => {
-                          return setFormData({
+                        onChange={(event) => {
+                          setFormData({
                             ...formData,
-                            [controlItem.id]: e.target.value,
+                            [controlItem.id]: event.target.value,
                           });
                         }}
+                        value={formData[controlItem.id]}
                       />
                     ) : null
                   )}
@@ -141,6 +138,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 }

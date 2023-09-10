@@ -80,7 +80,6 @@ export default function AdminAddNewProduct(params) {
     setCurrentUpdatedProduct,
   } = useContext(GlobalContext);
 
-  console.log(currentUpdatedProduct, "currentUpdatedProduct");
 
   const router = useRouter();
 
@@ -91,13 +90,11 @@ export default function AdminAddNewProduct(params) {
   }, [currentUpdatedProduct]);
 
   const handleImage = async (e) => {
-    console.log(e.target.value);
 
     const extractImageUrl = await helperForUPloadingImageToFirebase(
       e.target.files[0]
     );
 
-    console.log(extractImageUrl);
 
     if (extractImageUrl) {
       setFormData({
@@ -130,7 +127,6 @@ export default function AdminAddNewProduct(params) {
         ? await updateAProduct(formData)
         : await addNewProduct(formData);
 
-    console.log(res);
 
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: " " });
@@ -151,7 +147,6 @@ export default function AdminAddNewProduct(params) {
     }
   };
 
-  console.log(formData);
 
   return (
     <div className="w-full mt-5 mr-0 mb-0 ml-0 relative">

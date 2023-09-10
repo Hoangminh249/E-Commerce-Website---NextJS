@@ -35,7 +35,6 @@ export default function Checkout() {
 
   const params = useSearchParams();
 
-  console.log(cartItems);
 
   const getAllAddresses = async () => {
     const res = await fetchAllAddresses(user?._id);

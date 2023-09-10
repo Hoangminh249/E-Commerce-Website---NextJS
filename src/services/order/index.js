@@ -53,3 +53,42 @@ export const getOrderDetails = async (id) => {
     console.log(error);
   }
 };
+
+export const getAllOrdersForAllUser = async () => {
+  try {
+    const res = await fetch(`/api/admin/orders/get-all-orders`, {
+      method: "GET",
+
+      headers: {
+        "Content-Type": "application/json",
+
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    });
+
+    const data = await res.json();
+    console.log(data, "data");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateStatusOfOrder = async (formData) => {
+  try {
+    const res = await fetch(`/api/admin/orders/update-order`, {
+      method: "PUT",
+
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    console.log(data, "data");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

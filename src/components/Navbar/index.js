@@ -62,7 +62,6 @@ function Navbar(props) {
   const router = useRouter();
 
   const pathName = usePathname();
-  console.log(currentUpdatedProduct, "nav");
 
   useEffect(() => {
     if (

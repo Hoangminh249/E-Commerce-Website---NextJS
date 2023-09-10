@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import ComponentLevelLoader from "../Loader/componentLevelLoder";
 
 export default function CommonCart({
@@ -7,6 +8,8 @@ export default function CommonCart({
   handleRemoveCartItem,
   componentLevelLoader,
 }) {
+  const router = useRouter();
+
   return (
     <section className="h-screen bg-gray-100">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,6 +42,7 @@ export default function CommonCart({
                             </div>
                             <div className="mt-4 flex gap-3 items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
                               <p className="shrink-0 w-20 text-base font-semibold text-gray-950 sm:order-1 sm:ml-8 sm:text-right">
+                                $
                                 {item && item.productID && item.productID.price}
                               </p>
                               <button
@@ -67,9 +71,9 @@ export default function CommonCart({
                       </li>
                     ))}
                   </ul>
-                ) : 
-                <h1 className="font-bold text-lg">No Item In Cart !</h1>
-                }
+                ) : (
+                  <h1 className="font-bold text-lg">No Item In Cart !</h1>
+                )}
               </div>
               <div>
                 <div className="mt-6 border-t border-b py-2">
@@ -103,6 +107,7 @@ export default function CommonCart({
                   </div>
                   <div className="mt-5 text-center">
                     <button
+                      onClick={() => router.push("/checkout")}
                       disabled={cartItems && cartItems.length === 0}
                       className="disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
                     >

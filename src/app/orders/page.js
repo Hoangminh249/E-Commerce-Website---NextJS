@@ -23,7 +23,6 @@ export default function Orders() {
     setPageLevelLoader(true);
 
     const res = await getAllOrdersForUser(user?._id);
-    console.log(res, "Resssssss");
 
     if (res.success) {
       setPageLevelLoader(false);

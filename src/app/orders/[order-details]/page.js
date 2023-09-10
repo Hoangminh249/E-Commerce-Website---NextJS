@@ -30,7 +30,6 @@ export default function OrderDetails() {
       setPageLevelLoader(false);
     }
 
-    console.log(res);
   }
 
   useEffect(() => {
