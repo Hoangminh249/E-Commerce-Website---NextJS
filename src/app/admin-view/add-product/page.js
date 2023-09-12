@@ -39,8 +39,11 @@ const helperForUPloadingImageToFirebase = async (file) => {
   const getFileName = createUniqueFileName(file);
 
   const storageReference = ref(storage, `ecommerce/${getFileName}`);
+  console.log(storageReference, "dataaa");
+
 
   const uploadImage = uploadBytesResumable(storageReference, file);
+  console.log(uploadImage);
 
   return new Promise((resolve, reject) => {
     uploadImage.on(

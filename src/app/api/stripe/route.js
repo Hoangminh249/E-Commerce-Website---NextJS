@@ -3,9 +3,8 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-const stripe = require("stripe")(
-  "sk_test_51No4H3HcDBKDh1a3RfgLBt7MzP7P6S5X3zggkZw7bL2QoaKQqNvuiFFM1remtdHoFfU28lqAwWidb3RRQ9ehQJrL000XYq6Ofl"
-);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const successUrl = process.env.SUCCESS_URL;
 
 export async function POST(req) {
   try {
@@ -18,8 +17,8 @@ export async function POST(req) {
         payment_method_types: ["card"],
         line_items: res,
         mode: "payment",
-        success_url: "http://localhost:3000/checkout" + "?status=success",
-        cancel_url: "http://localhost:3000/checkout" + "?status=cancel",
+        success_url: successUrl + "?status=success",
+        cancel_url: successUrl + "?status=cancel",
       });
 
       return NextResponse.json({
