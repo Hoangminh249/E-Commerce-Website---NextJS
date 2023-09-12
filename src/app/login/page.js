@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-
 const initialFormData = {
   email: "",
   password: "",
@@ -32,7 +31,6 @@ export default function Login() {
 
   const router = useRouter();
 
-
   const isValidForm = () => {
     return formData &&
       formData.email &&
@@ -46,7 +44,6 @@ export default function Login() {
   const handleLoginForm = async () => {
     setComponentLevelLoader({ loading: true, id: "" });
     const res = await login(formData);
-
 
     if (res.success) {
       toast.success(res.message, {
@@ -69,7 +66,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthUser) {
-     return router.push("/");
+      return router.push("/");
     }
   }, [isAuthUser]);
 
@@ -87,6 +84,7 @@ export default function Login() {
                 {loginFormControls.map((controlItem) =>
                   controlItem.componentType === "input" ? (
                     <InputComponent
+                      key={controlItem.id}
                       type={controlItem.type}
                       placeholder={controlItem.placeholder}
                       label={controlItem.label}
@@ -110,7 +108,9 @@ export default function Login() {
                     <ComponentLevelLoader
                       text={"Logging In"}
                       color={"#ffffff"}
-                      loading={componentLevelLoader && componentLevelLoader.loading}
+                      loading={
+                        componentLevelLoader && componentLevelLoader.loading
+                      }
                     />
                   ) : (
                     "Login"

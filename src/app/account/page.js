@@ -208,6 +208,7 @@ export default function Account(params) {
                 <div className="w-full mt-6 mr-0 mb-0 ml-0 space-y-8">
                   {addNewAddressFormControls.map((controlItem) => (
                     <InputComponent
+                    key={controlItem.id}
                       type={controlItem.type}
                       placeholder={controlItem.placeholder}
                       label={controlItem.label}

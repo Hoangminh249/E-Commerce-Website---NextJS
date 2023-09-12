@@ -41,7 +41,6 @@ const helperForUPloadingImageToFirebase = async (file) => {
   const storageReference = ref(storage, `ecommerce/${getFileName}`);
   console.log(storageReference, "dataaa");
 
-
   const uploadImage = uploadBytesResumable(storageReference, file);
   console.log(uploadImage);
 
@@ -83,7 +82,6 @@ export default function AdminAddNewProduct(params) {
     setCurrentUpdatedProduct,
   } = useContext(GlobalContext);
 
-
   const router = useRouter();
 
   useEffect(() => {
@@ -93,11 +91,9 @@ export default function AdminAddNewProduct(params) {
   }, [currentUpdatedProduct]);
 
   const handleImage = async (e) => {
-
     const extractImageUrl = await helperForUPloadingImageToFirebase(
       e.target.files[0]
     );
-
 
     if (extractImageUrl) {
       setFormData({
@@ -130,7 +126,6 @@ export default function AdminAddNewProduct(params) {
         ? await updateAProduct(formData)
         : await addNewProduct(formData);
 
-
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: " " });
       toast.success(res.message, {
@@ -140,7 +135,7 @@ export default function AdminAddNewProduct(params) {
       setTimeout(() => {
         router.push("/admin-view/all-products");
       }, 1000);
-      setCurrentUpdatedProduct(null)
+      setCurrentUpdatedProduct(null);
     } else {
       setComponentLevelLoader({ loading: false, id: "" });
       toast.error(res.message, {
@@ -149,7 +144,6 @@ export default function AdminAddNewProduct(params) {
       setFormData(initialFormData);
     }
   };
-
 
   return (
     <div className="w-full mt-5 mr-0 mb-0 ml-0 relative">
@@ -173,6 +167,7 @@ export default function AdminAddNewProduct(params) {
           {adminAddProductformControls.map((controlItem) => {
             return controlItem.componentType === "input" ? (
               <InputComponent
+                key={controlItem.id}
                 type={controlItem.type}
                 placeholder={controlItem.placeholder}
                 label={controlItem.label}
@@ -204,7 +199,11 @@ export default function AdminAddNewProduct(params) {
           >
             {componentLevelLoader && componentLevelLoader.loading ? (
               <ComponentLevelLoader
-                text={currentUpdatedProduct !== null ? "Updating Product" : "Adding Product" }
+                text={
+                  currentUpdatedProduct !== null
+                    ? "Updating Product"
+                    : "Adding Product"
+                }
                 color={"#ffffff"}
                 loading={componentLevelLoader && componentLevelLoader.loading}
               />

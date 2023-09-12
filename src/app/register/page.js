@@ -24,9 +24,7 @@ export default function Register() {
   const { pageLevelLoader, setPageLevelLoader, isAuthUser } =
     useContext(GlobalContext);
 
-
   const router = useRouter();
-
 
   const isFormValid = () => {
     return formData &&
@@ -58,7 +56,6 @@ export default function Register() {
       setPageLevelLoader(false);
       setFormData(initialFormData);
     }
-
   };
 
   useEffect(() => {
@@ -90,6 +87,7 @@ export default function Register() {
                   {registrationFormControls.map((controlItem) =>
                     controlItem.componentType === "input" ? (
                       <InputComponent
+                        key={controlItem.id}
                         type={controlItem.type}
                         placeholder={controlItem.placeholder}
                         label={controlItem.label}
@@ -103,6 +101,7 @@ export default function Register() {
                       />
                     ) : controlItem.componentType === "select" ? (
                       <SelectComponent
+                        key={controlItem.id}
                         options={controlItem.options}
                         label={controlItem.label}
                         onChange={(event) => {
