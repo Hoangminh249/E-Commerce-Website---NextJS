@@ -189,16 +189,16 @@ export const AvailableSizes = [
 ];
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyAo_95TXeZE4R9yJ9LWsEhcYqS5GYHDvEk",
-  authDomain: "ecommer-project-nextjs.firebaseapp.com",
-  projectId: "ecommer-project-nextjs",
-  storageBucket: "ecommer-project-nextjs.appspot.com",
-  messagingSenderId: "821580838618",
-  appId: "1:821580838618:web:5d390f81a29ee2202ed7e3",
-  measurementId: "G-NFCHCX1BP5",
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: `${process.env.STORAGEBUCKET}`,
+  messagingSenderId: process.env.MESAGINGSENDERID,
+  appId: process.env.APPID,
+  measurementId: process.env.MEASUREMENTID,
 };
 
-export const firebaseStorageURL = "gs://ecommer-project-nextjs.appspot.com";
+export const firebaseStorageURL = process.env.FIREBASE_STORAGE_URL;
 
 
 export const addNewAddressFormControls = [
