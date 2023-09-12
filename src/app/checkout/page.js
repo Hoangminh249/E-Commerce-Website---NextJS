@@ -28,8 +28,7 @@ export default function Checkout() {
 
   const [orderSuccess, setOrderSuccess] = useState(false);
 
-  const publishableKey =
-    "pk_test_51No4H3HcDBKDh1a3LCtGqnSXNUfFxHRyzy00BvAv0AFuKdES9rO8C2MywLfHQIVJf8uJAH9NOyzpGzQ9cG2rv9er00nS8UxV1G";
+  const publishableKey = process.env.PUBLISHABLEKEY
 
   const stripePromise = loadStripe(publishableKey);
 
