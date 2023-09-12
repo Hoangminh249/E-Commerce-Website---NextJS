@@ -7,7 +7,7 @@ const configOptions = {
 
 const connectToDB = async () => {
   const connectionUrl =
-    "mongodb+srv://mh742578:12345678023@cluster0.uw343jh.mongodb.net/";
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.uw343jh.mongodb.net/`;
   mongoose
     .connect(connectionUrl, configOptions)
     .then(() => console.log("Connect DB successfully"))

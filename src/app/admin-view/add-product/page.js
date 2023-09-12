@@ -112,7 +112,7 @@ export default function AdminAddNewProduct(params) {
     if (index === -1) {
       cpySizes.push(item);
     } else {
-      cpySizes = cpySizes.filter((i) => item.id !== item.id);
+      cpySizes = cpySizes.filter((i) => i.id !== item.id);
     }
     setFormData({
       ...formData,

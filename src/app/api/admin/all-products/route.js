@@ -18,7 +18,7 @@ export async function GET(req) {
     } else {
       return NextResponse.json({
         success: false,
-        message: "You are not Authorized",
+        message: "Product not Found",
       });
     }
   } catch (error) {
