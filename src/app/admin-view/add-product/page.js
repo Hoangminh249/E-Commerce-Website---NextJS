@@ -167,7 +167,6 @@ export default function AdminAddNewProduct(params) {
           {adminAddProductformControls.map((controlItem) => {
             return controlItem.componentType === "input" ? (
               <InputComponent
-                key={controlItem.id}
                 type={controlItem.type}
                 placeholder={controlItem.placeholder}
                 label={controlItem.label}

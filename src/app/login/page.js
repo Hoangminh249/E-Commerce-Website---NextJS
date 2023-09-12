@@ -84,7 +84,6 @@ export default function Login() {
                 {loginFormControls.map((controlItem) =>
                   controlItem.componentType === "input" ? (
                     <InputComponent
-                      key={controlItem.id}
                       type={controlItem.type}
                       placeholder={controlItem.placeholder}
                       label={controlItem.label}
